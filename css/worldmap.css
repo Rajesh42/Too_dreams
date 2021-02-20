@@ -1,0 +1,10 @@
+section{
+    background-color: #191a1a;
+}
+.logo{
+    height:50px;
+}
+#map{
+        width: 99vw;
+        height: 90vh;
+}
