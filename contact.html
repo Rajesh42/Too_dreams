@@ -38,13 +38,15 @@
               </div>
             </div>
           </div>
-          <div class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
+            <form  class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0" action="https://formspree.io/f/mvovekko"  method="POST" id="my-form">
             <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Contact</h2>
             <p class="leading-relaxed mb-5 text-gray-600">Want to get in touch? We'd love to hear from you</p>
-            <input class="bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4" placeholder="Name" type="text">
-            <input class="bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4" placeholder="Email" type="email">
-            <textarea class="bg-white rounded border border-gray-400 focus:outline-none h-32 focus:border-green-500 text-base px-4 py-2 mb-4 resize-none" placeholder="Message"></textarea>
-            <button class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Submit</button>
+            <input class="bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4" placeholder="Name" type="text" name="Name">
+            <input class="bg-white rounded border border-gray-400 focus:outline-none focus:border-green-500 text-base px-4 py-2 mb-4" placeholder="Email" name="Email">
+            <textarea class="bg-white rounded border border-gray-400 focus:outline-none h-32 focus:border-green-500 text-base px-4 py-2 mb-4 resize-none" placeholder="Message"  name="Message"></textarea>
+            <button class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg" id="my-form-button">Submit</button>
+            <h2 class="font-medium title-font text-blue border-0 py-2 px-15 focus:outline-none text-lg" id="my-form-status"></h2>
+            </form>
           </div>
         </div>
       </section>
@@ -84,3 +86,50 @@
       </footer>
 </body>
 </html>
+<script>
+  window.addEventListener("DOMContentLoaded", function() {
+
+    // get the form elements defined in your form HTML above
+    
+    var form = document.getElementById("my-form");
+    var button = document.getElementById("my-form-button");
+    var status = document.getElementById("my-form-status");
+
+    // Success and Error functions for after the form is submitted
+    
+    function success() {
+      form.reset();
+      button.style = "display: none ";
+      status.innerHTML = "One of our colleagues will get back in touch with you soon!";
+    }
+
+    function error() {
+      status.innerHTML = "Oops! There was a problem.";
+    }
+
+    // handle the form submission event
+
+    form.addEventListener("submit", function(ev) {
+      ev.preventDefault();
+      var data = new FormData(form);
+      ajax(form.method, form.action, data, success, error);
+    });
+  });
+  
+  // helper function for sending an AJAX request
+
+  function ajax(method, url, data, success, error) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState !== XMLHttpRequest.DONE) return;
+      if (xhr.status === 200) {
+        success(xhr.response, xhr.responseType);
+      } else {
+        error(xhr.status, xhr.response, xhr.responseType);
+      }
+    };
+    xhr.send(data);
+  }
+</script>
